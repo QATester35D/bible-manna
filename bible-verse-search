@@ -32,7 +32,7 @@ translations=["ASV","AKJV","BRG","EHV","ESV","ESVUK","GNV","GW","ISV",
 # json_file_interface.write('./Ecclesiastes.json', bible)
 
 # Bring back ALL the translations for a single Bible verse
-# getVerseForAllTranslations('Psalms', 94, 19)
+getVerseForAllTranslations('Psalms', 94, 19)
 
 # Bring back ALL the translations for a range of Bible verses
 getMultiVersesForAllTranslations('Genesis', 1, 1, 1, 2)

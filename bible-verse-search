@@ -1,4 +1,4 @@
-# from meaningless import JSONDownloader, json_file_interface
+from meaningless import JSONDownloader, json_file_interface
 from meaningless import WebExtractor
 
 def getVerseForAllTranslations(book,chapter,verse):
@@ -6,11 +6,10 @@ def getVerseForAllTranslations(book,chapter,verse):
         if i == 0:
             print("Looking up Bible verse: " + book + " " + str(chapter) + ":" + str(verse))
         bible = WebExtractor(value)
-        # passage = bible.get_passage('Ecclesiastes', 1, 2)
-        passage = bible.get_passage(book,chapter,verse)
+        passage = bible.get_passage(book,chapter,verse) #Like: 'Ecclesiastes', 1, 2
         print(value + " Translation: " + passage)
 
-#Put these in classes, have this class/module use inheritance
+# Put these in classes, have this class/module use inheritance
 def getMultiVersesForAllTranslations(book, chapter_from, passage_from, chapter_to, passage_to):
     for i, value in enumerate(translations, start=00):
         if i == 0:
@@ -19,6 +18,14 @@ def getMultiVersesForAllTranslations(book, chapter_from, passage_from, chapter_t
         # passage = bible.get_passage('Ecclesiastes', 1, 2)
         passage = bible.get_passage_range(book, chapter_from, passage_from, chapter_to, passage_to)
         print(value + " Translation: " + passage)
+
+# Save passage result to a JSON file
+def writePassageResultToJsonFile(book,chapter,verse):
+    downloader = JSONDownloader()
+    downloader.download_passage(book,chapter,verse) #Like: 'Ecclesiastes', 1, 2
+    bible = json_file_interface.read('C:/Temp/Ecclesiastes.json')
+    bible['Info']['Customised?'] = True
+    json_file_interface.write('./Ecclesiastes.json', bible)
 
 translations=["ASV","AKJV","BRG","EHV","ESV","ESVUK","GNV","GW","ISV",
               "JUB","KJV","KJ21","LEB","MEV","NASB","NASB1995","NET",
@@ -55,11 +62,7 @@ bibleVersions={
 }
 
 # if __name__ == '__main__':
-# downloader = JSONDownloader()
-# downloader.download_passage('Ecclesiastes', 1, 2)
-# bible = json_file_interface.read('./Ecclesiastes.json')
-# bible['Info']['Customised?'] = True
-# json_file_interface.write('./Ecclesiastes.json', bible)
+writePassageResultToJsonFile('Acts', 4, 12)
 
 # Bring back ALL the translations for a single Bible verse
 getVerseForAllTranslations('Psalms', 94, 19)

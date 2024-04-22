@@ -1,0 +1,38 @@
+# from meaningless import JSONDownloader, json_file_interface
+from meaningless import WebExtractor
+
+def getVerseForAllTranslations(book,chapter,verse):
+    for i, value in enumerate(translations, start=00):
+        if i == 0:
+            print("Looking up Bible verse: " + book + " " + str(chapter) + ":" + str(verse))
+        bible = WebExtractor(value)
+        # passage = bible.get_passage('Ecclesiastes', 1, 2)
+        passage = bible.get_passage(book,chapter,verse)
+        print(value + " Translation: " + passage)
+
+#Put these in classes, have this class/module use inheritance
+def getMultiVersesForAllTranslations(book, chapter_from, passage_from, chapter_to, passage_to):
+    for i, value in enumerate(translations, start=00):
+        if i == 0:
+            print("Looking up Bible verse: "+book+" "+str(chapter_from)+":"+str(passage_from)+"-"+str(chapter_to)+":"+str(passage_to))
+        bible = WebExtractor(value)
+        # passage = bible.get_passage('Ecclesiastes', 1, 2)
+        passage = bible.get_passage_range(book, chapter_from, passage_from, chapter_to, passage_to)
+        print(value + " Translation: " + passage)
+
+translations=["ASV","AKJV","BRG","EHV","ESV","ESVUK","GNV","GW","ISV",
+              "JUB","KJV","KJ21","LEB","MEV","NASB","NASB1995","NET",
+              "NIV","NIVUK","NKJV","NLT","NLV","NOG","NRSV","NRSVUE","WEB","YLT"]
+
+# if __name__ == '__main__':
+# downloader = JSONDownloader()
+# downloader.download_passage('Ecclesiastes', 1, 2)
+# bible = json_file_interface.read('./Ecclesiastes.json')
+# bible['Info']['Customised?'] = True
+# json_file_interface.write('./Ecclesiastes.json', bible)
+
+# Bring back ALL the translations for a single Bible verse
+# getVerseForAllTranslations('Psalms', 94, 19)
+
+# Bring back ALL the translations for a range of Bible verses
+getMultiVersesForAllTranslations('Genesis', 1, 1, 1, 2)

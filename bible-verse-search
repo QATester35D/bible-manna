@@ -61,7 +61,8 @@ bibleVersions={
     "YLT":"Young's Literal Translation of the Bible"
 }
 
-# if __name__ == '__main__':
+# Write to various file formats: YAML, JSON, XML, CSV
+# This one is JSON format
 writePassageResultToJsonFile('Acts', 4, 12)
 
 # Bring back ALL the translations for a single Bible verse
@@ -69,3 +70,7 @@ getVerseForAllTranslations('Psalms', 94, 19)
 
 # Bring back ALL the translations for a range of Bible verses
 getMultiVersesForAllTranslations('Genesis', 1, 1, 1, 2)
+
+# More stuff to do: finding/searching text in a book
+
+# if __name__ == '__main__':

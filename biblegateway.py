@@ -9,54 +9,71 @@ class BibleGetInsight:
         # One format: https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01
         self.bibleAPIURL =  "https://api.scripture.api.bible"
         self.API_KEY = 'c0688c91b5867edc8faf256a9ee319ca'
-        # self.usgsEarthquakeApi = requests.get(earthquakeURL+params)
 
-    def getBibleData(self, urlRemainder, theJSON):
-        #pass in remainder of URL for the desired query
-        #urlRemainder looks similar to: /v1/bibles
+    def getBibleData(self, urlRemainder):
+        #pass in remainder of URL for the desired query; urlRemainder looks similar to: /v1/bibles
         #Need to build url = "https://api.scripture.api.bible/v1/bibles"
-        url=
+        url=self.bibleAPIURL+urlRemainder
+        API_KEY=self.API_KEY
         headers = {'api-key': API_KEY}
         response = requests.request("GET", url, headers=headers)
         theJSON = json.loads(response.content)
         print(response.text)
-        r=self.usgsEarthquakeApi
-        if r.status_code != 200:
-            print ("Problem connecting with USGS Earthquake API at https://earthquake.usgs.gov/earthquakes.")
+        if response.status_code != 200:
+            print ("Problem connecting with api.bible API at https://api.scripture.api.bible .")
             exit
-        earthquakeList = []
+        
         try:
-            theJSON = json.loads(r.content)
+            theJSON = json.loads(response.content)
         except:
             theJSON = None
-                
-        if not theJSON or 'type' not in theJSON :
+        
+        # if not theJSON or 'type' not in theJSON :
+        if not theJSON:
             print('==== Failure To Retrieve ====')
-            print(r.content)
+            print(response.content)
+        return theJSON
 
+########################## Main program logic ##########################
+a=BibleGetInsight()
+API_KEY=a.API_KEY
 
-################################################################
-# All Bibles
-url = "https://api.scripture.api.bible/v1/bibles"
-headers = {'api-key': API_KEY}
-response = requests.request("GET", url, headers=headers)
-theJSON = json.loads(response.content)
-print(response.text)
-################################################################
-# Get a specific Bible
-# The Holy Bible, American Standard Version - 06125adad2d5898a-01
+#Get all the available Bible versions/translations
+bibles=a.getBibleData("/v1/bibles")
+
+bibleName="The Holy Bible, American Standard Version"
+for i in bibles["data"]:
+    if i["name"] == bibleName:
+        bibleId=i["id"]
+        break
+
+########################################################################
+# Get a specific Bible - The Holy Bible, American Standard Version - 06125adad2d5898a-01
 # bibleId='06125adad2d5898a-01'
-url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01"
-headers = {'api-key': API_KEY}
-response = requests.request("GET", url, headers=headers)
-theJSON = json.loads(response.content)
-print(response.text)
+# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01"
+url = "/v1/bibles/"+bibleId
+specificBible=a.getBibleData(url)
+
 ################################################################
 # Get all books
 # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/books"
+url = "/v1/bibles/"+bibleId+"/books"
+getAllBibleBooks=a.getBibleData(url)
 
+bibleBook="Genesis"
+for i in getAllBibleBooks["data"]:
+    if i["name"] == bibleBook:
+        bibleBookId=i["id"]
+        break
 
+################################################################
+# Get a specific book
+# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/books/GEN"
+url = "/v1/bibles/"+bibleId+"/books/"+bibleBookId
+getSpecificBibleBook=a.getBibleData(url)
 
+######### Pick up here
+################################################################
 # /v1/bibles/{bibleId}/books/{bookId}/chapters
 url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/books/GEN/chapters"
 print("Retrieving all chapters from Genesis.")

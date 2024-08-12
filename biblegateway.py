@@ -72,18 +72,25 @@ for i in getAllBibleBooks["data"]:
 url = "/v1/bibles/"+bibleId+"/books/"+bibleBookId
 getSpecificBibleBook=a.getBibleData(url)
 
-######### Pick up here
 ################################################################
+# Get all chapters for a specific book
 # /v1/bibles/{bibleId}/books/{bookId}/chapters
-url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/books/GEN/chapters"
-print("Retrieving all chapters from Genesis.")
-# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.2"
-headers = {'api-key': API_KEY}
-response = requests.request("GET", url, headers=headers)
-theJSON = json.loads(response.content)
-print(response.text)
-print("\n")
+# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/books/GEN/chapters"
+url = "/v1/bibles/"+bibleId+"/books/"+bibleBookId+"/chapters"
+getAllBibleChapters=a.getBibleData(url)
+bibleChapter="20"
+for i in getAllBibleChapters["data"]:
+    if i["number"] == bibleChapter:
+        bibleChapterId=i["id"]
+        break
 
+print("Retrieving all chapters from",bibleBook)
+# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.2"
+# Get a specific book
+url = "/v1/bibles/"+bibleId+"/books/"+bibleBookId+"/chapters/"+bibleChapterId
+getSpecificBibleChapter=a.getBibleData(url)
+
+######### Pick up here
 # /v1/bibles/{bibleId}/passages/{passageId}
 url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/passages/GEN.1.1-GEN.1.2"
 headers = {'api-key': API_KEY}

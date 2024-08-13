@@ -18,7 +18,7 @@ class BibleGetInsight:
         headers = {'api-key': API_KEY}
         response = requests.request("GET", url, headers=headers)
         theJSON = json.loads(response.content)
-        print(response.text)
+        # print(response.text)
         if response.status_code != 200:
             print ("Problem connecting with api.bible API at https://api.scripture.api.bible .")
             exit
@@ -39,89 +39,98 @@ a=BibleGetInsight()
 API_KEY=a.API_KEY
 
 #Get all the available Bible versions/translations
+print("Retrieving all Bibles available with this API.")
 bibles=a.getBibleData("/v1/bibles")
 
-bibleName="The Holy Bible, American Standard Version"
+# bibleName="The Holy Bible, American Standard Version"
+bibleName=input("What Bible do you want to work with (the name must be exact)? ")
+#Using the Bible name, retrieve the Bible ID for it
 for i in bibles["data"]:
     if i["name"] == bibleName:
         bibleId=i["id"]
+        print("The Bible ID for the bible",bibleName,"is",bibleId)
         break
 
 ########################################################################
-# Get a specific Bible - The Holy Bible, American Standard Version - 06125adad2d5898a-01
+# Retrieving the specific Bible by ID - The Holy Bible, American Standard Version - 06125adad2d5898a-01
 # bibleId='06125adad2d5898a-01'
 # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01"
 url = "/v1/bibles/"+bibleId
 specificBible=a.getBibleData(url)
 
 ################################################################
-# Get all books
+# Get all the books in this Bible
 # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/books"
 url = "/v1/bibles/"+bibleId+"/books"
 getAllBibleBooks=a.getBibleData(url)
 
-bibleBook="Genesis"
+#Find a specific Book in the Bible and get it's ID
+# bibleBook="Genesis"
+bibleBook=input("What specific Bible book do you want to retrieve (provide name like Genesis): ")
 for i in getAllBibleBooks["data"]:
     if i["name"] == bibleBook:
         bibleBookId=i["id"]
         break
 
 ################################################################
-# Get a specific book
+# Retrieve the specific book
 # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/books/GEN"
 url = "/v1/bibles/"+bibleId+"/books/"+bibleBookId
 getSpecificBibleBook=a.getBibleData(url)
+print("The specific book is:",getSpecificBibleBook)
 
 ################################################################
-# Get all chapters for a specific book
+# Get all chapters for the specified book
 # /v1/bibles/{bibleId}/books/{bookId}/chapters
 # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/books/GEN/chapters"
+print("Retrieving all chapters from",bibleBook)
 url = "/v1/bibles/"+bibleId+"/books/"+bibleBookId+"/chapters"
 getAllBibleChapters=a.getBibleData(url)
-bibleChapter="20"
+print("All the chapters for this book are:",getAllBibleChapters)
+
+# bibleChapter="20"
+bibleChapter=input("What chapter in this book do you want? Needs to be in the expected format (like 33): ")
 for i in getAllBibleChapters["data"]:
     if i["number"] == bibleChapter:
-        bibleChapterId=i["id"]
+        bibleChapterId=i["id"] #Retrive the ID for the specified chapter
         break
 
-print("Retrieving all chapters from",bibleBook)
 # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.2"
-# Get a specific book
-url = "/v1/bibles/"+bibleId+"/books/"+bibleBookId+"/chapters/"+bibleChapterId
+# Using the ID for the specified chapter, retrieve the chapter
+url = "/v1/bibles/"+bibleId+"/chapters/"+bibleChapterId
 getSpecificBibleChapter=a.getBibleData(url)
+print("The specific chapter desired from this book is:",getSpecificBibleChapter)
 
-######### Pick up here
+# Retrieving a range of chapters
 # /v1/bibles/{bibleId}/passages/{passageId}
-url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/passages/GEN.1.1-GEN.1.2"
-headers = {'api-key': API_KEY}
-response = requests.request("GET", url, headers=headers)
-theJSON = json.loads(response.content)
-print("Retrieving passages.")
-print(response.text)
+startingChapter=input("Provide the chapter to start retrieving from: ")
+startingChapter=bibleBookId+"."+startingChapter
+endingChapter=input("Provide the ending chapter to end with: ")
+endingChapter=bibleBookId+"."+endingChapter
+# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/passages/GEN.1.1-GEN.1.2"
+url = "/v1/bibles/"+bibleId+"/passages/"+startingChapter+"-"+endingChapter
+getBibleChapterRange=a.getBibleData(url)
+print("The Bible chapter range results are:",getBibleChapterRange)
 
+# Keyword search for passages containing the word
+keywordSearch=input("What is the specific keyword you want to search for in the Bible? ")
+limitOfPassagesToBringBack=input("How many total passages do you want to bring back that match the keyword? ")
+# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/search?query=discouraged&limit=10&sort=relevance"
+url = "/v1/bibles/"+bibleId+"/search?query="+keywordSearch+"&limit="+limitOfPassagesToBringBack+"&sort=relevance"
+getPassagesForKeyword=a.getBibleData(url)
+print("The passage results for the keyword are as follows:",getPassagesForKeyword)
 
-#  /v1/bibles/06125adad2d5898a-01/search?query=discouraged&limit=10&sort=relevance
-url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/search?query=discouraged&limit=10&sort=relevance"
-headers = {'api-key': API_KEY}
-response = requests.request("GET", url, headers=headers)
-theJSON = json.loads(response.content)
-print(response.text)
+# Bring back all verses in the specified chapter mentioned above
+# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.1/verses"
+url = "/v1/bibles/"+bibleId+"/chapters/"+bibleChapterId+"/verses"
+getVersesForChapter=a.getBibleData(url)
+print("Getting all verses for the chapter:",getVersesForChapter)
 
-
-#                                      /v1/bibles/{bibleId}/chapters/{chapterId}/verses
-url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.1/verses"
-headers = {'api-key': API_KEY}
-response = requests.request("GET", url, headers=headers)
-theJSON = json.loads(response.content)
-print(response.text)
-
-
+# Retrieve the specific verse in a chapter desired
+bibleVerse=input("What is the specific verse you want to retrieve for the chapter you are in (like 1 for verse 1? ")
 # /v1/bibles/{bibleId}/verses/{verseId}
-url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/verses/GEN.1.1"
-headers = {'api-key': API_KEY}
-response = requests.request("GET", url, headers=headers)
-theJSON = json.loads(response.content)
-print(response.text)
-
-
+# url = "/v1/bibles/"+bibleId+"/verses/GEN.1.1"
+url = "/v1/bibles/"+bibleId+"/verses/"+bibleChapterId+"."+bibleVerse
+getSpecifiedVerse=a.getBibleData(url)
+print("The specific verses requested is:",getSpecifiedVerse)
 time.sleep(1)

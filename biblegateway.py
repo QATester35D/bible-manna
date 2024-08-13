@@ -119,6 +119,10 @@ limitOfPassagesToBringBack=input("How many total passages do you want to bring b
 url = "/v1/bibles/"+bibleId+"/search?query="+keywordSearch+"&limit="+limitOfPassagesToBringBack+"&sort=relevance"
 getPassagesForKeyword=a.getBibleData(url)
 print("The passage results for the keyword are as follows:",getPassagesForKeyword)
+for i in getPassagesForKeyword['data']['verses']:
+    verseMatch=i['text']
+    print("Matching verse is:")
+    print(verseMatch)
 
 # Bring back all verses in the specified chapter mentioned above
 # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.1/verses"

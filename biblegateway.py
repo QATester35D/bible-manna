@@ -1,6 +1,7 @@
 import requests
 import json
 import time
+import os
 import urllib.request, urllib.parse, urllib.error
 from collections import defaultdict
 
@@ -34,9 +35,90 @@ class BibleGetInsight:
             print(response.content)
         return theJSON
 
-########################## Main program logic ##########################
+##### Flat file work when API is down
+fname="c:\\Temp\\bibleDataStrong.txt"
+dataStrongFile="c:\\Temp\\dataStrongOnly.txt"
+createFile=False
+performFlatFileOps=True
+
+if performFlatFileOps:
+    f = open(fname)
+    theJSON=f.read()
+    f.close()
+
+    # theJSON = json.loads(f.content)
+    biblePassage=""
+    from bs4 import BeautifulSoup
+    dataStrongVerse = []
+
+    # for item in theJSON:
+    # biblePassage=(theJSON['data']['content'])
+    biblePassage=theJSON #temporary for dealing with files
+    soup = BeautifulSoup(biblePassage, "html.parser")
+    if os.path.exists(dataStrongFile): # Check if the file exists
+        os.remove(dataStrongFile) # If it exists, delete the file
+    f = open(dataStrongFile, "a")
+
+    for link in soup.find_all('span'):
+        if link.has_attr('class'):
+            if link['class'][0] == 'w':
+                if link.has_attr('data-strong'):
+                    dataStrongHebrewWord=link.attrs['data-strong']
+                    # dataStrongVerse.append(link.attrs['data-strong'])
+                    dataStrongVerse.append(dataStrongHebrewWord)
+                    f.write(dataStrongHebrewWord+" ")
+    f.close()
+
+time.sleep(1)
+# ########################################################################
+# ##### Bible Choices - Bible IDs
+# bibleId='926aa5efbc5e04e2-01' #German Luther Bible 1912 with Strong's numbers
+# # bibleId='06125adad2d5898a-01' #The Holy Bible, American Standard Version
+bibleId='685d1470fe4d5c3b-01'  #American Standard Version (Byzantine Text with Apocrypha)
+# # bibleId='de4e12af7f28f599-01'  #King James (Authorised) Version
+
+####### Build the URL
+# bibleChapterId='GEN.2'
+# url = "/v1/bibles/"+bibleId
+# url = "/v1/bibles/"+bibleId+"/chapters/"+bibleChapterId
+# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books/GEN"
+# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.2" #no data-strong
+# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books"
+url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/chapters/GEN.1"
+# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/verses/GEN.1.1"
 a=BibleGetInsight()
 API_KEY=a.API_KEY
+headers = {'api-key': API_KEY}
+response = requests.request("GET", url, headers=headers)
+theJSON = json.loads(response.content)
+
+if createFile:
+    if os.path.exists(fname): # Check if the file exists
+        os.remove(fname) # If it exists, delete the file
+    f = open(fname, "a")
+    f.write(theJSON)
+    f.close()
+
+    # dataStrongVerse.append(item.get('data-strong'))
+
+    # for link in soup.find_all('span'):
+    #     if link['class'][0] == 'w':
+    #         dataStrongVerse.append(link.get('data-strong'))
+
+    # # if soup.span['class'] == 'w':
+    # #     soup.
+    # # item = soup.find("span").find("data-strong")
+    # # a=soup.find_all('data-strong')
+
+# for i in theJSON["span"]:
+#     if i["content"] == bibleName:
+#         biblePassage=biblePassage+" "+i["data-strong"]
+#         print("The Bible ID for the bible",bibleName,"is",bibleId)
+#         break
+
+# print("The specific chapter desired from this book is:",getSpecificBibleChapter)
+########################################################################
+########################################################################
 
 #Get all the available Bible versions/translations
 print("Retrieving all Bibles available with this API.")

@@ -1,6 +1,7 @@
 # Using https://pypi.org/project/meaningless/#description 
 from meaningless import JSONDownloader, json_file_interface
 from meaningless import WebExtractor
+import time
 
 def getVerseForAllTranslations(book,chapter,verse):
     for i, value in enumerate(translations, start=00):
@@ -23,6 +24,7 @@ def getMultiVersesForAllTranslations(book, chapter_from, passage_from, chapter_t
 # Save passage result to a JSON file
 def writePassageResultToJsonFile(book,chapter,verse):
     downloader = JSONDownloader()
+    time.sleep(2)
     downloader.download_passage(book,chapter,verse) #Like: 'Ecclesiastes', 1, 2
     bible = json_file_interface.read('C:/Temp/Ecclesiastes.json')
     bible['Info']['Customised?'] = True
@@ -64,7 +66,7 @@ bibleVersions={
 
 # Write to various file formats: YAML, JSON, XML, CSV
 
-##########This one has an issue all of a sudden
+##########This one has an issue all of a sudden, seems to spawn multiple subprocesses and gets out of whack
 # This one is JSON format
 # writePassageResultToJsonFile('Acts', 4, 12)
 

@@ -36,10 +36,10 @@ class BibleGetInsight:
         return theJSON
 
 ##### Flat file work when API is down
-fname="c:\\Temp\\bibleDataStrong.txt"
+fname="c:\\Temp\\bibleGenesisDataStrong.txt"
 dataStrongFile="c:\\Temp\\dataStrongOnly.txt"
-createFile=False
-performFlatFileOps=True
+createFile=True
+performFlatFileOps=False
 
 if performFlatFileOps:
     f = open(fname)
@@ -81,10 +81,10 @@ bibleId='685d1470fe4d5c3b-01'  #American Standard Version (Byzantine Text with A
 # bibleChapterId='GEN.2'
 # url = "/v1/bibles/"+bibleId
 # url = "/v1/bibles/"+bibleId+"/chapters/"+bibleChapterId
-# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books/GEN"
+url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books/GEN"
 # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.2" #no data-strong
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books"
-url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/chapters/GEN.1"
+# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/chapters/GEN.1"
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/verses/GEN.1.1"
 a=BibleGetInsight()
 API_KEY=a.API_KEY

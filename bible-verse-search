@@ -1,6 +1,7 @@
 # Using https://pypi.org/project/meaningless/#description 
 from meaningless import JSONDownloader, json_file_interface
 from meaningless import WebExtractor
+from meaningless import CSVDownloader
 import time
 
 def getVerseForAllTranslations(book,chapter,verse):
@@ -70,18 +71,34 @@ bibleVersions={
 # This one is JSON format
 # writePassageResultToJsonFile('Acts', 4, 12)
 
+
+
 ####################################################################
 # Bring back ALL the translations for a range of Bible verses
 # *This works
 ####################################################################
-getMultiVersesForAllTranslations('Genesis', 1, 1, 1, 2)
+# getMultiVersesForAllTranslations('Genesis', 1, 1, 1, 2)
 
 ####################################################################
 # Bring back ALL the translations for a single Bible verse
 # *This works
 ####################################################################
-getVerseForAllTranslations('Psalms', 94, 19)
+# getVerseForAllTranslations('Psalms', 94, 19)
 
 # More stuff to do: finding/searching text in a book
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
+    #This section would only run in a main section - this downloads each book in the Bible
+    booksInBible=["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges",
+                  "Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles",
+                  "Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes",
+                  "Song of Songs","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea",
+                  "Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah",
+                  "Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans",
+                  "1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians",
+                  "Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy",
+                  "Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John",
+                  "3 John","Jude","Revelation"]
+    downloader = CSVDownloader()
+    for i in booksInBible:
+        downloader.download_book(i, "C:\\Temp\\Bible\\NIV_"+i+".csv")

@@ -73,25 +73,50 @@ time.sleep(1)
 # ########################################################################
 # ##### Bible Choices - Bible IDs
 # bibleId='926aa5efbc5e04e2-01' #German Luther Bible 1912 with Strong's numbers
-# # bibleId='06125adad2d5898a-01' #The Holy Bible, American Standard Version
-bibleId='685d1470fe4d5c3b-01'  #American Standard Version (Byzantine Text with Apocrypha)
-# # bibleId='de4e12af7f28f599-01'  #King James (Authorised) Version
+# # bibleId='06125adad2d5898a-01' #The Holy Bible, American Standard Version - no data strong
+bibleId='685d1470fe4d5c3b-01'  #American Standard Version (Byzantine Text with Apocrypha) - New Testament only
+# bibleId='de4e12af7f28f599-01'  #King James (Authorised) Version
+# bibleId='de4e12af7f28f599-02'  #King James (Authorised) Version
+# bibleId='9879dbb7cfe39e4d-01'   #World English Bible
+# bibleId='7142879509583d59-01'   #World English Bible British Edition - 
+# bibleId='72f4e6dc683324df-01'    #World English Bible Updated - 
+# bibleId='32664dc3288a28df-01'    #World English Bible, American English Edition, without Strong's Numbers - 
+# bibleId='f72b840c855f362c-04'    #World Messianic Bible - New Testament only
+# bibleId='66c22495370cdfc0-01'    #Translation for Translators - 
+# bibleId='2f0fd81d7b85b923-01'    #The English New Testament According to Family 35 - New Testament only
+# bibleId='c89622d31b60c444-02'   #The Orthodox Jewish Bible
+# bibleId='65bfdebd704a8324-01'   #Brenton English translation of the Septuagint
+# bibleId='65eec8e0b60e656b-01'    #Free Bible Version - 
+# bibleId='c315fa9f71d4af3a-01'   #Geneva Bible - 
 
 ####### Build the URL
 # bibleChapterId='GEN.2'
 # url = "/v1/bibles/"+bibleId
 # url = "/v1/bibles/"+bibleId+"/chapters/"+bibleChapterId
-url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books/GEN"
-# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.2" #no data-strong
+# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books/GEN"
+# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/chapters/GEN.2"
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books"
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/chapters/GEN.1"
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/verses/GEN.1.1"
 a=BibleGetInsight()
 API_KEY=a.API_KEY
 headers = {'api-key': API_KEY}
+#Using this site https://scripture.api.bible/livedocs#/Books/getBooks to get more parameters for data values
+# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books?include-chapters=true&include-chapters-and-sections=true"
+url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/verses/MAT.1.1"
 response = requests.request("GET", url, headers=headers)
 theJSON = json.loads(response.content)
+print(theJSON)
 
+booksInNewTestament=["Matthew","Mark","Luke","John","Acts","Romans",
+                "1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians",
+                "Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy",
+                "Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John",
+                "3 John","Jude","Revelation"]
+for i in booksInNewTestament:
+    downloader.download_book(i, "C:\\Temp\\Bible\\NIV_"+i+".csv")
+
+##############
 if createFile:
     if os.path.exists(fname): # Check if the file exists
         os.remove(fname) # If it exists, delete the file

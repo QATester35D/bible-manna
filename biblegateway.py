@@ -46,6 +46,7 @@ if performFlatFileOps:
     theJSON=f.read()
     f.close()
 
+
     # theJSON = json.loads(f.content)
     biblePassage=""
     from bs4 import BeautifulSoup

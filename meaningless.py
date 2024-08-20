@@ -1,3 +1,8 @@
+##############################################################################################
+# This script uses the meaningless project/package (https://pypi.org/project/meaningless/)
+# Note that if a method fails, it is probably because you are trying to access a Book that is
+# not available for that translation (some only offer the New Testament)
+##############################################################################################
 # Using https://pypi.org/project/meaningless/#description 
 from meaningless import JSONDownloader, json_file_interface
 from meaningless import WebExtractor

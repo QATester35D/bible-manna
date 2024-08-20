@@ -1,3 +1,7 @@
+##############################################################################################
+# This script uses the API for api.bible 
+# References: https://docs.api.bible/guides/bibles/ and https://scripture.api.bible/livedocs#/ 
+##############################################################################################
 import requests
 import json
 import time

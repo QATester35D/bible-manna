@@ -1,8 +1,12 @@
+##############################################################################################
+# This script is necessary because the CSV files created with the meaningless CSVDownloader()
+# creates files that are messy and span multiple lines typically, and have other data that
+# is not relevant (creation info)
+##############################################################################################
 import os
+import time
 
-# Process through the folder
 folderName="c:\\Temp\\Bible"
-# fileName=get file
 newFolderName="c:\\Temp\\BibleCleanFiles\\"
  
 # iterate over files in the directory
@@ -10,28 +14,48 @@ for filename in os.listdir(folderName):
     fullName = os.path.join(folderName, filename)
     # checking if it is a file
     if os.path.isfile(fullName):
-        #start temp code
-        filename="NIV_1 Corinthians.txt"
-        fullname="c:\\Temp\\Bible\\NIV_1 Corinthians.txt"
-        #end temp code
         print("Cleaning up file",fullName)
-        bookName=filename.s
+        fileNameLength=len(filename)
+        bookName=filename[4:-4] #stripping off the translation abbreviation and the file extension
+        bookNameLength=len(bookName)
         newFileName=newFolderName+filename
-        origFile = open(fullName) #open original file
-        newFile=open(newFileName,"a") #open new file to create
-        bibleVerses = origFile.readlines()
-        for dataRow in bibleVerses:
-            # dataRow=origFile.read()
-            #sample of data row:
-            #Book,Chapter,Passage,Text,Language,Translation,Timestamp,Meaningless
-            #1 Chronicles,1,1,"¹ Adam, Seth, Enosh, ",English,NIV,2024-08-16T15:45:34.631427-04:00,1.0.0
-            # dataRow="1 Chronicles,1,1,\"¹ Adam, Seth, Enosh, \",English,NIV,2024-08-16T15:45:34.631427-04:00,1.0.0"
-            dr=dataRow.split(",English") #end of data to discard
-            splitTwo=dr[0].split(",",3)
-            if dataRow.startswith("Book,Chapter,",1):
-                continue
-            elif 
-            
+        origFile = open(fullName, encoding="utf-8") #open original file
+        newFile=open(newFileName,"a", encoding="utf-8") #open new file to create
 
+        prevLine=""
+        newLine=True
+        lineToKeep=None
+        bibleVerses = origFile.readlines()
+        startOfFile=True #starting with the very first row
+        for dataRow in bibleVerses:
+            if startOfFile:
+                if dataRow.startswith("Book,Chapter"): #Double checking before discarding - all the files have this beginning line that we need to discard line 1
+                    startOfFile=False
+                    startingConcatenation=True
+                    continue
+
+            if startingConcatenation:
+                if dataRow[0:bookNameLength] == bookName:
+                    lineToKeep=dataRow
+                    startingConcatenation=False
+                else:
+                    print("Something went wrong, expected next line to start with the bookname.")
+                    print("Data row is:",dataRow)
+                    print("lineToKeep is:",lineToKeep)
+            elif dataRow[0:bookNameLength] != bookName:
+                    lineToKeep=lineToKeep+dataRow
+            else:
+                    dr=lineToKeep.split(",English") #end of data to discard
+                    tempLine=dr[0]
+                    if tempLine[-2] == "\n":
+                        tempLine = tempLine[:-2]
+                    if tempLine[-1] != "\"":
+                        tempLine = tempLine + "\""
+                    newFile.write(tempLine + "\n")
+                    #start next line to write
+                    lineToKeep=""
+                    lineToKeep=dataRow
+
+        print("Done, created new file",newFileName)
         origFile.close()
         newFile.close()

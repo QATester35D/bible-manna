@@ -29,7 +29,7 @@ for filename in os.listdir(folderName):
         startOfFile=True #starting with the very first row
         for dataRow in bibleVerses:
             if startOfFile:
-                if dataRow.startswith("Book,Chapter"): #Double checking before discarding - all the files have this beginning line that we need to discard line 1
+                if dataRow.startswith("Book,Chapter"): #Discarding line 1 - all the files have this beginning line
                     startOfFile=False
                     startingConcatenation=True
                     continue

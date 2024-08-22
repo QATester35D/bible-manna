@@ -1,5 +1,5 @@
 ##############################################################################################
-# Process through the text files for each Bible book and insert that data into the database.
+# This can be deleted when the insert script is finished
 ##############################################################################################
 import os
 import time

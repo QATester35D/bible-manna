@@ -6,6 +6,7 @@
 import os
 import time
 
+# folderName="c:\\Temp\\BibleTempFiles"
 folderName="c:\\Temp\\Bible"
 newFolderName="c:\\Temp\\BibleCleanFiles\\"
  
@@ -39,11 +40,13 @@ for filename in os.listdir(folderName):
                     lineToKeep=dataRow
                     startingConcatenation=False
                 else:
-                    print("Something went wrong, expected next line to start with the bookname.")
+                    print("Something went wrong, working with file",filename,"expected next line to start with the bookname.")
                     print("Data row is:",dataRow)
                     print("lineToKeep is:",lineToKeep)
             elif dataRow[0:bookNameLength] != bookName:
-                    lineToKeep=lineToKeep+dataRow
+                    if lineToKeep[-1] == "\n":
+                        lineToKeep = lineToKeep[:-1]
+                    lineToKeep=lineToKeep+" "+dataRow
             else:
                     dr=lineToKeep.split(",English") #end of data to discard
                     tempLine=dr[0]
@@ -56,6 +59,17 @@ for filename in os.listdir(folderName):
                     lineToKeep=""
                     lineToKeep=dataRow
 
+        #Write the last line from the file
+        if lineToKeep != None:
+            dr=lineToKeep.split(",English") #end of data to discard
+            tempLine=dr[0]
+            if tempLine[-2] == "\n":
+                tempLine = tempLine[:-2]
+            if tempLine[-1] != "\"":
+                tempLine = tempLine + "\""
+            newFile.write(tempLine + "\n")
+
+        dr=tempLine=lineToKeep=dataRow=None
         print("Done, created new file",newFileName)
         origFile.close()
         newFile.close()

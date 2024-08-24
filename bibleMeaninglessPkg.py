@@ -4,7 +4,8 @@
 # not available for that translation (some only offer the New Testament)
 ##############################################################################################
 # Using https://pypi.org/project/meaningless/#description 
-from meaningless import JSONDownloader, json_file_interface
+from meaningless import JSONDownloader
+from meaningless import json_file_interface
 from meaningless import WebExtractor
 from meaningless import CSVDownloader
 import time
@@ -70,6 +71,7 @@ bibleVersions={
     "YLT":"Young's Literal Translation of the Bible"
 }
 
+#Some calls are restricted to using the WebExtractor only
 # Write to various file formats: YAML, JSON, XML, CSV
 
 ##########This one has an issue all of a sudden, seems to spawn multiple subprocesses and gets out of whack
@@ -88,22 +90,22 @@ bibleVersions={
 # Bring back ALL the translations for a single Bible verse
 # *This works
 ####################################################################
-# getVerseForAllTranslations('Psalms', 94, 19)
+getVerseForAllTranslations('Psalms', 94, 19)
 
 # More stuff to do: finding/searching text in a book
 
-if __name__ == '__main__':
-    #This section would only run in a main section - this downloads each book in the Bible
-    booksInBible=["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges",
-                  "Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles",
-                  "Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes",
-                  "Song of Songs","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea",
-                  "Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah",
-                  "Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans",
-                  "1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians",
-                  "Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy",
-                  "Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John",
-                  "3 John","Jude","Revelation"]
-    downloader = CSVDownloader()
-    for i in booksInBible:
-        downloader.download_book(i, "C:\\Temp\\Bible\\NIV_"+i+".csv")
+# if __name__ == '__main__':
+#     #This section would only run in a main section - this downloads each book in the Bible
+#     booksInBible=["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges",
+#                   "Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles",
+#                   "Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes",
+#                   "Song of Songs","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea",
+#                   "Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah",
+#                   "Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans",
+#                   "1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians",
+#                   "Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy",
+#                   "Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John",
+#                   "3 John","Jude","Revelation"]
+    # downloader = CSVDownloader()
+    # for i in booksInBible:
+    #     downloader.download_book(i, "C:\\Temp\\Bible\\NIV_"+i+".csv")

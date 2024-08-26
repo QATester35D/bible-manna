@@ -8,6 +8,8 @@ import time
 import os
 import urllib.request, urllib.parse, urllib.error
 from collections import defaultdict
+import bibleBooks
+from bs4 import BeautifulSoup
 
 class BibleGetInsight:
     def __init__(self):
@@ -40,75 +42,22 @@ class BibleGetInsight:
         return theJSON
 
 # ##### Flat file work when API is down
-# fname="c:\\Temp\\bibleGenesisDataStrong.txt"
-# dataStrongFile="c:\\Temp\\dataStrongOnly.txt"
-# createFile=True
-# performFlatFileOps=False
-
-# if performFlatFileOps:
-#     f = open(fname)
-#     theJSON=f.read()
-#     f.close()
-
-
-#     # theJSON = json.loads(f.content)
-
-## Move this code down to the stop here section 
+folderName="C:\\Temp\\Bible\\StrongFiles\\"
 biblePassage=""
-from bs4 import BeautifulSoup
-dataStrongVerse = []
+#Comment out this line
+# biblePassage="'<p class=\"p\"><span data-number=\"1\" data-sid=\"GEN 1:1\" class=\"v\">1</span>Am <span data-strong=\"H7225\" class=\"w\">Anfang</span> <span data-strong=\"H1254\" class=\"w\">schuf</span> <span data-strong=\"H0430\" class=\"w\">Gott</span> <span data-strong=\"H8064\" class=\"w\">Himmel</span> und <span data-strong=\"H0776\" class=\"w\">Erde</span>. <span data-number=\"2\" data-sid=\"GEN 1:2\" class=\"v\">2</span>Und die <span data-strong=\"H0776\" class=\"w\">Erde</span> <span data-strong=\"H1961\" class=\"w\">war</span> <span data-strong=\"H8414\" class=\"w\">wüst</span> und <span data-strong=\"H0922\" class=\"w\">leer</span>, und es war <span data-strong=\"H2822\" class=\"w\">finster</span> auf der <span data-strong=\"H6440\" class=\"w\">Tiefe</span>; und der <span data-strong=\"H7307\" class=\"w\">Geist</span> <span data-strong=\"H0430\" class=\"w\">Gottes</span> <span data-strong=\"H7363\" class=\"w\">schwebte</span> <span data-strong=\"H5921\" class=\"w\">auf</span> dem <span data-strong=\"H6440\" class=\"w\">Wasser</span>. <span data-number=\"3\" data-sid=\"GEN 1:3\" class=\"v\">3</span>Und <span data-strong=\"H0430\" class=\"w\">Gott</span> <span data-strong=\"H0559\" class=\"w\">sprach</span>: Es <span data-strong=\"H1961\" class=\"w\">werde</span> <span data-strong=\"H0216\" class=\"w\">Licht</span>! und es ward <span data-strong=\"H0216\" class=\"w\>Licht</span>"
 
-#     # for item in theJSON:
-#     # biblePassage=(theJSON['data']['content'])
-#     biblePassage=theJSON #temporary for dealing with files
-biblePassage="'<p class=\"p\"><span data-number=\"1\" data-sid=\"GEN 1:1\" class=\"v\">1</span>Am <span data-strong=\"H7225\" class=\"w\">Anfang</span> <span data-strong=\"H1254\" class=\"w\">schuf</span> <span data-strong=\"H0430\" class=\"w\">Gott</span> <span data-strong=\"H8064\" class=\"w\">Himmel</span> und <span data-strong=\"H0776\" class=\"w\">Erde</span>. <span data-number=\"2\" data-sid=\"GEN 1:2\" class=\"v\">2</span>Und die <span data-strong=\"H0776\" class=\"w\">Erde</span> <span data-strong=\"H1961\" class=\"w\">war</span> <span data-strong=\"H8414\" class=\"w\">wüst</span> und <span data-strong=\"H0922\" class=\"w\">leer</span>, und es war <span data-strong=\"H2822\" class=\"w\">finster</span> auf der <span data-strong=\"H6440\" class=\"w\">Tiefe</span>; und der <span data-strong=\"H7307\" class=\"w\">Geist</span> <span data-strong=\"H0430\" class=\"w\">Gottes</span> <span data-strong=\"H7363\" class=\"w\">schwebte</span> <span data-strong=\"H5921\" class=\"w\">auf</span> dem <span data-strong=\"H6440\" class=\"w\">Wasser</span>. <span data-number=\"3\" data-sid=\"GEN 1:3\" class=\"v\">3</span>Und <span data-strong=\"H0430\" class=\"w\">Gott</span> <span data-strong=\"H0559\" class=\"w\">sprach</span>: Es <span data-strong=\"H1961\" class=\"w\">werde</span> <span data-strong=\"H0216\" class=\"w\">Licht</span>! und es ward <span data-strong=\"H0216\" class=\"w\>Licht</span>"
-
-soup = BeautifulSoup(biblePassage, "html.parser")
-# if os.path.exists(dataStrongFile): # Check if the file exists
-#     os.remove(dataStrongFile) # If it exists, delete the file
-# f = open(dataStrongFile, "a")
-
-for link in soup.find_all('span'):
-    if link.has_attr('class'):
-        if link['class'][0] == 'v':
-            bookChapterVerse=link.attrs['data-sid']
-        if link['class'][0] == 'w':
-            if link.has_attr('data-strong'):
-                dataStrongHebrewWord=link.attrs['data-strong']
-                # dataStrongVerse.append(link.attrs['data-strong'])
-                dataStrongVerse.append(dataStrongHebrewWord)
-                time.sleep(1)
-#                 f.write(dataStrongHebrewWord+" ")
-# f.close()
-
-# time.sleep(1)
-# ########################################################################
-# ##### Bible Choices - Bible IDs
+#########################################################################################################
+#This German Bible translation is the only one api.bible seems to have that contains the Strong's numbers
 bibleId='926aa5efbc5e04e2-01' #German Luther Bible 1912 with Strong's numbers
-# # bibleId='06125adad2d5898a-01' #The Holy Bible, American Standard Version - no data strong
-# bibleId='685d1470fe4d5c3b-01'  #American Standard Version (Byzantine Text with Apocrypha) - New Testament only
-# bibleId='de4e12af7f28f599-01'  #King James (Authorised) Version
-# bibleId='de4e12af7f28f599-02'  #King James (Authorised) Version
-# bibleId='9879dbb7cfe39e4d-01'   #World English Bible
-# bibleId='7142879509583d59-01'   #World English Bible British Edition - 
-# bibleId='72f4e6dc683324df-01'    #World English Bible Updated - 
-# bibleId='32664dc3288a28df-01'    #World English Bible, American English Edition, without Strong's Numbers - 
-# bibleId='f72b840c855f362c-04'    #World Messianic Bible - New Testament only
-# bibleId='66c22495370cdfc0-01'    #Translation for Translators - 
-# bibleId='2f0fd81d7b85b923-01'    #The English New Testament According to Family 35 - New Testament only
-# bibleId='c89622d31b60c444-02'   #The Orthodox Jewish Bible
-# bibleId='65bfdebd704a8324-01'   #Brenton English translation of the Septuagint
-# bibleId='65eec8e0b60e656b-01'    #Free Bible Version - 
-# bibleId='c315fa9f71d4af3a-01'   #Geneva Bible - 
 
 ####### Build the URL
 # bibleChapterId='GEN.2'
 # url = "/v1/bibles/"+bibleId
 # url = "/v1/bibles/"+bibleId+"/chapters/"+bibleChapterId
+# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books"
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books/GEN"
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/chapters/GEN.2"
-# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books"
-# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/chapters/GEN.1"
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/verses/GEN.1.1"
 a=BibleGetInsight()
 API_KEY=a.API_KEY
@@ -118,7 +67,6 @@ url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books?include-chapt
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/verses/MAT.1.1"
 response = requests.request("GET", url, headers=headers)
 theJSON = json.loads(response.content)
-# print(theJSON)
 
 ##############
 # if createFile:
@@ -149,18 +97,18 @@ theJSON = json.loads(response.content)
 ########################################################################
 ########################################################################
 
-#Get all the available Bible versions/translations
-print("Retrieving all Bibles available with this API.")
-bibles=a.getBibleData("/v1/bibles")
+# #Get all the available Bible versions/translations
+# print("Retrieving all Bibles available with this API.")
+# bibles=a.getBibleData("/v1/bibles")
 
-# bibleName="The Holy Bible, American Standard Version"
-bibleName=input("What Bible do you want to work with (the name must be exact)? ")
-#Using the Bible name, retrieve the Bible ID for it
-for i in bibles["data"]:
-    if i["name"] == bibleName:
-        bibleId=i["id"]
-        print("The Bible ID for the bible",bibleName,"is",bibleId)
-        break
+# # bibleName="The Holy Bible, American Standard Version"
+# bibleName=input("What Bible do you want to work with (the name must be exact)? ")
+# #Using the Bible name, retrieve the Bible ID for it
+# for i in bibles["data"]:
+#     if i["name"] == bibleName:
+#         bibleId=i["id"]
+#         print("The Bible ID for the bible",bibleName,"is",bibleId)
+#         break
 
 ########################################################################
 # Retrieving the specific Bible by ID - The Holy Bible, American Standard Version - 06125adad2d5898a-01
@@ -181,13 +129,6 @@ for i in getAllBibleBooks['data']:
     bk=getAllBibleBooks['data'][ctr]['id']
     booksInGLB.append(bk)
     ctr=ctr+1
-#Find a specific Book in the Bible and get it's ID
-# bibleBook="Genesis"
-# bibleBook=input("What specific Bible book do you want to retrieve (provide name like Genesis): ")
-# for i in getAllBibleBooks["data"]:
-#     if i["name"] == bibleBook:
-#         bibleBookId=i["id"]
-#         break
 
 ################################################################
 # Retrieve the specific book
@@ -198,48 +139,70 @@ for i in getAllBibleBooks['data']:
 #     url = "/v1/bibles/"+bibleId+"/books/"+i
 #     getSpecificBibleBook=a.getBibleData(url)
 #     print("The specific book is:",getSpecificBibleBook)
-
-################################################################
-################################################################
-#Need to figure out how to write out the books for the specifid Bible - specifically German Luther Bible 1912 with Strong's numbers
-
 ################################################################
 ################################################################
 # Get all chapters for the specified book
 # /v1/bibles/{bibleId}/books/{bookId}/chapters
 # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/books/GEN/chapters"
-# print("Retrieving all chapters from",bibleBook)
 nbrOfBooks=len(booksInGLB) #This is a list of books like GEN, EXO, LEV, NUM
 for nbrBooksCtr in range(nbrOfBooks):
     #Now retrieve each chapter out of each book one at a time
     url = "/v1/bibles/"+bibleId+"/books/"+booksInGLB[nbrBooksCtr]+"/chapters"
     getAllBibleChapters=a.getBibleData(url)
-    # print("All the chapters for this book are:",getAllBibleChapters)
-
-    # bibleChapter="20"
-    # bibleChapter=input("What chapter in this book do you want? Needs to be in the expected format (like 33): ")
     nbrOfChapterInBook=len(getAllBibleChapters['data'])
-    # for nbrChptsCtr in nbrOfChapterInBook:
-    #     getAllBibleChapters["data"]
-    #     if i["number"] == bibleChapter:
-    #         bibleChapterId=i["id"] #Retrive the ID for the specified chapter
-    #         break
-
-    # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.2"
-    # Using the ID for the specified chapter, retrieve the chapter
     for nbrChptsCtr in range(nbrOfChapterInBook):
         bookNbr=nbrChptsCtr+1
         bibleChapterId=booksInGLB[nbrBooksCtr]+"."+str(bookNbr)
         url = "/v1/bibles/"+bibleId+"/chapters/"+bibleChapterId
         getSpecificBibleChapter=a.getBibleData(url)
-        tempLine=getSpecificBibleChapter["data"]["content"]
-        #Write the chapter to a text file
-        folderName="c:\\Temp\\Bible"
-        newFileName="GLB_"+booksInGLB[nbrBooksCtr]+".txt"
-        newFile=open(newFileName,"a", encoding="utf-8")
-        newFile.write(tempLine + "\n")
- 
-        print("The specific chapter desired from this book is:",getSpecificBibleChapter)
+        biblePassage=getSpecificBibleChapter["data"]["content"]
+        # #Write the chapter to a text file
+        # folderName="c:\\Temp\\Bible"
+        # newFileName="GLB_"+booksInGLB[nbrBooksCtr]+".txt"
+        # newFile=open(newFileName,"a", encoding="utf-8")
+        # newFile.write(tempLine + "\n")
+        # print("The specific chapter desired from this book is:",getSpecificBibleChapter)
+        dataStrongVerse = []
+        soup = BeautifulSoup(biblePassage, "html.parser")
+        # Need to build line to write to text file which will get inserted into the database. Should look like this:
+        # Genesis,1,1,In the beginning God created the heavens and the earth. " but with Strong's numbers, so like this:
+        # Genesis,1,1,"H7225 H1254 H0430 H8064 H0776"
+        bibleTranslation="GLB"
+        starting=True
+        currentLine=None
+        nextLine=None
+        parseOnce=False
+        for link in soup.find_all('span'):
+            if link.has_attr('class'):
+                if link['class'][0] == 'v':
+                    bookChapterVerse=link.attrs['data-sid']
+                    if starting:
+                        currentLine=bookChapterVerse
+
+                    nextLine=bookChapterVerse
+
+                    if currentLine != nextLine:
+                        f.write(dataStrongVerse+"\"\n")
+
+                    book=bookChapterVerse[:3]
+                    bibleBookFullName=bibleBooks.findBibleBookName(book)
+                    if starting:
+                        fileName=folderName+bibleTranslation+"_"+bibleBookFullName+".txt"
+                        f = open(fileName, "a")
+                        starting=False
+
+                    tempSplit=bookChapterVerse.split()
+                    chapterVerse=tempSplit[1].split(":")
+                    chapter=chapterVerse[0]
+                    verse=chapterVerse[1]
+                    dataStrongVerse=bibleBookFullName+","+chapter+","+verse+",\""
+
+                if link['class'][0] == 'w':
+                    if link.has_attr('data-strong'):
+                        dataStrongHebrewWord=link.attrs['data-strong']
+                        dataStrongVerse=dataStrongVerse+dataStrongHebrewWord+" "
+            
+        f.close()
 
 ########### stop here
 ################################################################

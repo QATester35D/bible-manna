@@ -1,5 +1,8 @@
 ##############################################################################################
 # This script uses the meaningless project/package (https://pypi.org/project/meaningless/)
+# It is limited in use. Seems to really only work effectively with the NIV. It also seems to use
+# the "biblegateway.com/api/" however that api is not open anymore.
+#
 # Note that if a method fails, it is probably because you are trying to access a Book that is
 # not available for that translation (some only offer the New Testament)
 ##############################################################################################
@@ -91,6 +94,16 @@ bibleVersions={
 # *This works
 ####################################################################
 getVerseForAllTranslations('Psalms', 94, 19)
+
+####################################################################
+# booksInNewTestament=["Matthew","Mark","Luke","John","Acts","Romans",
+#                 "1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians",
+#                 "Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy",
+#                 "Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John",
+#                 "3 John","Jude","Revelation"]
+# for i in booksInNewTestament:
+#     downloader.download_book(i, "C:\\Temp\\Bible\\NIV_"+i+".csv")
+####################################################################
 
 # More stuff to do: finding/searching text in a book
 

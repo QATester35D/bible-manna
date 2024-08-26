@@ -105,3 +105,12 @@ def findBibleBookName (bibleBookAbbrev):
         if k == bibleBookAbbrev:
             return v
     return None #if value not found
+
+def findBibleTranslationName (bibleTranslationAbbrev):
+    #If abbrev is mixed case, check for a length of 3 (3=abbrev), then make value all uppercase
+    if len(bibleTranslationAbbrev) == 3:
+        bibleTranslationAbbrev=bibleTranslationAbbrev.upper()
+    for k, v in bibleTranslations.items():
+        if k == bibleTranslationAbbrev:
+            return v
+    return None #if value not found

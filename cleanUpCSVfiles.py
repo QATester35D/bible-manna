@@ -1,6 +1,6 @@
 ##############################################################################################
 # This script is necessary because the CSV files created with the meaningless CSVDownloader()
-# creates files that are messy and span multiple lines typically, and have other data that
+# creates files that are messy, span multiple lines typically, and have other data that
 # is not relevant (creation info)
 ##############################################################################################
 import os

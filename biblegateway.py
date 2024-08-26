@@ -50,64 +50,33 @@ class BibleGetInsight:
 #     theJSON=f.read()
 #     f.close()
 
-
 #     # theJSON = json.loads(f.content)
 
-## Move this code down to the stop here section 
-biblePassage=""
-from bs4 import BeautifulSoup
-dataStrongVerse = []
-
-#     # for item in theJSON:
-#     # biblePassage=(theJSON['data']['content'])
-#     biblePassage=theJSON #temporary for dealing with files
-biblePassage="'<p class=\"p\"><span data-number=\"1\" data-sid=\"GEN 1:1\" class=\"v\">1</span>Am <span data-strong=\"H7225\" class=\"w\">Anfang</span> <span data-strong=\"H1254\" class=\"w\">schuf</span> <span data-strong=\"H0430\" class=\"w\">Gott</span> <span data-strong=\"H8064\" class=\"w\">Himmel</span> und <span data-strong=\"H0776\" class=\"w\">Erde</span>. <span data-number=\"2\" data-sid=\"GEN 1:2\" class=\"v\">2</span>Und die <span data-strong=\"H0776\" class=\"w\">Erde</span> <span data-strong=\"H1961\" class=\"w\">war</span> <span data-strong=\"H8414\" class=\"w\">wüst</span> und <span data-strong=\"H0922\" class=\"w\">leer</span>, und es war <span data-strong=\"H2822\" class=\"w\">finster</span> auf der <span data-strong=\"H6440\" class=\"w\">Tiefe</span>; und der <span data-strong=\"H7307\" class=\"w\">Geist</span> <span data-strong=\"H0430\" class=\"w\">Gottes</span> <span data-strong=\"H7363\" class=\"w\">schwebte</span> <span data-strong=\"H5921\" class=\"w\">auf</span> dem <span data-strong=\"H6440\" class=\"w\">Wasser</span>. <span data-number=\"3\" data-sid=\"GEN 1:3\" class=\"v\">3</span>Und <span data-strong=\"H0430\" class=\"w\">Gott</span> <span data-strong=\"H0559\" class=\"w\">sprach</span>: Es <span data-strong=\"H1961\" class=\"w\">werde</span> <span data-strong=\"H0216\" class=\"w\">Licht</span>! und es ward <span data-strong=\"H0216\" class=\"w\>Licht</span>"
-
-soup = BeautifulSoup(biblePassage, "html.parser")
-# if os.path.exists(dataStrongFile): # Check if the file exists
-#     os.remove(dataStrongFile) # If it exists, delete the file
-# f = open(dataStrongFile, "a")
-
-for link in soup.find_all('span'):
-    if link.has_attr('class'):
-        if link['class'][0] == 'v':
-            bookChapterVerse=link.attrs['data-sid']
-        if link['class'][0] == 'w':
-            if link.has_attr('data-strong'):
-                dataStrongHebrewWord=link.attrs['data-strong']
-                # dataStrongVerse.append(link.attrs['data-strong'])
-                dataStrongVerse.append(dataStrongHebrewWord)
-                time.sleep(1)
-#                 f.write(dataStrongHebrewWord+" ")
-# f.close()
-
-# time.sleep(1)
 # ########################################################################
-# ##### Bible Choices - Bible IDs
-bibleId='926aa5efbc5e04e2-01' #German Luther Bible 1912 with Strong's numbers
+# ##### Bible Translation Choices - Bible IDs
+bibleId='926aa5efbc5e04e2-01' #German Luther Bible 1912 with Strong's numbers (appears to be the only one with Strong's numbers)
 # # bibleId='06125adad2d5898a-01' #The Holy Bible, American Standard Version - no data strong
 # bibleId='685d1470fe4d5c3b-01'  #American Standard Version (Byzantine Text with Apocrypha) - New Testament only
 # bibleId='de4e12af7f28f599-01'  #King James (Authorised) Version
 # bibleId='de4e12af7f28f599-02'  #King James (Authorised) Version
-# bibleId='9879dbb7cfe39e4d-01'   #World English Bible
-# bibleId='7142879509583d59-01'   #World English Bible British Edition - 
-# bibleId='72f4e6dc683324df-01'    #World English Bible Updated - 
-# bibleId='32664dc3288a28df-01'    #World English Bible, American English Edition, without Strong's Numbers - 
-# bibleId='f72b840c855f362c-04'    #World Messianic Bible - New Testament only
-# bibleId='66c22495370cdfc0-01'    #Translation for Translators - 
-# bibleId='2f0fd81d7b85b923-01'    #The English New Testament According to Family 35 - New Testament only
-# bibleId='c89622d31b60c444-02'   #The Orthodox Jewish Bible
-# bibleId='65bfdebd704a8324-01'   #Brenton English translation of the Septuagint
-# bibleId='65eec8e0b60e656b-01'    #Free Bible Version - 
-# bibleId='c315fa9f71d4af3a-01'   #Geneva Bible - 
+# bibleId='9879dbb7cfe39e4d-01'  #World English Bible
+# bibleId='7142879509583d59-01'  #World English Bible British Edition - 
+# bibleId='72f4e6dc683324df-01'  #World English Bible Updated - 
+# bibleId='32664dc3288a28df-01'  #World English Bible, American English Edition, without Strong's Numbers - 
+# bibleId='f72b840c855f362c-04'  #World Messianic Bible - New Testament only
+# bibleId='66c22495370cdfc0-01'  #Translation for Translators - 
+# bibleId='2f0fd81d7b85b923-01'  #The English New Testament According to Family 35 - New Testament only
+# bibleId='c89622d31b60c444-02'  #The Orthodox Jewish Bible
+# bibleId='65bfdebd704a8324-01'  #Brenton English translation of the Septuagint
+# bibleId='65eec8e0b60e656b-01'  #Free Bible Version - 
+# bibleId='c315fa9f71d4af3a-01'  #Geneva Bible - 
 
-####### Build the URL
+####### Examples of building the URLs to call. There is a bit of a hierarchy you have to call to drill down in the Bible
 # bibleChapterId='GEN.2'
 # url = "/v1/bibles/"+bibleId
 # url = "/v1/bibles/"+bibleId+"/chapters/"+bibleChapterId
-# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books/GEN"
-# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/chapters/GEN.2"
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books"
+# url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books/GEN"
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/chapters/GEN.1"
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/verses/GEN.1.1"
 a=BibleGetInsight()
@@ -201,10 +170,6 @@ for i in getAllBibleBooks['data']:
 
 ################################################################
 ################################################################
-#Need to figure out how to write out the books for the specifid Bible - specifically German Luther Bible 1912 with Strong's numbers
-
-################################################################
-################################################################
 # Get all chapters for the specified book
 # /v1/bibles/{bibleId}/books/{bookId}/chapters
 # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/books/GEN/chapters"
@@ -241,11 +206,7 @@ for nbrBooksCtr in range(nbrOfBooks):
  
         print("The specific chapter desired from this book is:",getSpecificBibleChapter)
 
-########### stop here
-################################################################
-################################################################
-################################################################
-################################################################
+########### stop here for getting everything in a chapter
 
 ################################################################
 # Bring back all verses in the specified chapter mentioned above

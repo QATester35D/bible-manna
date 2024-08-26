@@ -68,48 +68,6 @@ url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books?include-chapt
 response = requests.request("GET", url, headers=headers)
 theJSON = json.loads(response.content)
 
-##############
-# if createFile:
-#     if os.path.exists(fname): # Check if the file exists
-#         os.remove(fname) # If it exists, delete the file
-#     f = open(fname, "a")
-#     f.write(theJSON)
-#     f.close()
-
-    # dataStrongVerse.append(item.get('data-strong'))
-
-    # for link in soup.find_all('span'):
-    #     if link['class'][0] == 'w':
-    #         dataStrongVerse.append(link.get('data-strong'))
-
-    # # if soup.span['class'] == 'w':
-    # #     soup.
-    # # item = soup.find("span").find("data-strong")
-    # # a=soup.find_all('data-strong')
-
-# for i in theJSON["span"]:
-#     if i["content"] == bibleName:
-#         biblePassage=biblePassage+" "+i["data-strong"]
-#         print("The Bible ID for the bible",bibleName,"is",bibleId)
-#         break
-
-# print("The specific chapter desired from this book is:",getSpecificBibleChapter)
-########################################################################
-########################################################################
-
-# #Get all the available Bible versions/translations
-# print("Retrieving all Bibles available with this API.")
-# bibles=a.getBibleData("/v1/bibles")
-
-# # bibleName="The Holy Bible, American Standard Version"
-# bibleName=input("What Bible do you want to work with (the name must be exact)? ")
-# #Using the Bible name, retrieve the Bible ID for it
-# for i in bibles["data"]:
-#     if i["name"] == bibleName:
-#         bibleId=i["id"]
-#         print("The Bible ID for the bible",bibleName,"is",bibleId)
-#         break
-
 ########################################################################
 # Retrieving the specific Bible by ID - The Holy Bible, American Standard Version - 06125adad2d5898a-01
 # bibleId='06125adad2d5898a-01'
@@ -151,22 +109,18 @@ for nbrBooksCtr in range(nbrOfBooks):
     getAllBibleChapters=a.getBibleData(url)
     nbrOfChapterInBook=len(getAllBibleChapters['data'])
     for nbrChptsCtr in range(nbrOfChapterInBook):
-        bookNbr=nbrChptsCtr+1
-        bibleChapterId=booksInGLB[nbrBooksCtr]+"."+str(bookNbr)
+        if nbrChptsCtr == 0:
+            continue
+        bibleChapterId=booksInGLB[nbrBooksCtr]+"."+str(nbrChptsCtr)
         url = "/v1/bibles/"+bibleId+"/chapters/"+bibleChapterId
         getSpecificBibleChapter=a.getBibleData(url)
         biblePassage=getSpecificBibleChapter["data"]["content"]
-        # #Write the chapter to a text file
-        # folderName="c:\\Temp\\Bible"
-        # newFileName="GLB_"+booksInGLB[nbrBooksCtr]+".txt"
-        # newFile=open(newFileName,"a", encoding="utf-8")
-        # newFile.write(tempLine + "\n")
-        # print("The specific chapter desired from this book is:",getSpecificBibleChapter)
         dataStrongVerse = []
         soup = BeautifulSoup(biblePassage, "html.parser")
-        # Need to build line to write to text file which will get inserted into the database. Should look like this:
-        # Genesis,1,1,In the beginning God created the heavens and the earth. " but with Strong's numbers, so like this:
+        # Build line to write to text file. Should look like this:
         # Genesis,1,1,"H7225 H1254 H0430 H8064 H0776"
+        # Equivalent to this:
+        # Genesis,1,1,In the beginning God created the heavens and the earth. " but with Strong's numbers, so like this:
         bibleTranslation="GLB"
         starting=True
         currentLine=None
@@ -183,6 +137,7 @@ for nbrBooksCtr in range(nbrOfBooks):
 
                     if currentLine != nextLine:
                         f.write(dataStrongVerse+"\"\n")
+                        currentLine=nextLine
 
                     book=bookChapterVerse[:3]
                     bibleBookFullName=bibleBooks.findBibleBookName(book)
@@ -201,57 +156,5 @@ for nbrBooksCtr in range(nbrOfBooks):
                     if link.has_attr('data-strong'):
                         dataStrongHebrewWord=link.attrs['data-strong']
                         dataStrongVerse=dataStrongVerse+dataStrongHebrewWord+" "
-            
+        f.write(dataStrongVerse+"\"\n")
         f.close()
-
-########### stop here
-################################################################
-################################################################
-################################################################
-################################################################
-
-################################################################
-# Bring back all verses in the specified chapter mentioned above
-# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.1/verses"
-url = "/v1/bibles/"+bibleId+"/chapters/"+bibleChapterId+"/verses"
-getVersesForChapter=a.getBibleData(url)
-print("Getting all verses for the chapter:",getVersesForChapter)
-
-################################################################
-# Retrieving a range of chapters
-# /v1/bibles/{bibleId}/passages/{passageId}
-startingChapter=input("Provide the chapter to start retrieving from: ")
-startingChapter=booksInGLB[0]+"."+startingChapter
-endingChapter=input("Provide the ending chapter to end with: ")
-endingChapter=booksInGLB[0]+"."+endingChapter
-# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/passages/GEN.1.1-GEN.1.2"
-url = "/v1/bibles/"+bibleId+"/passages/"+startingChapter+"-"+endingChapter
-getBibleChapterRange=a.getBibleData(url)
-print("The Bible chapter range results are:",getBibleChapterRange)
-
-# Keyword search for passages containing the word
-keywordSearch=input("What is the specific keyword you want to search for in the Bible? ")
-limitOfPassagesToBringBack=input("How many total passages do you want to bring back that match the keyword? ")
-# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/search?query=discouraged&limit=10&sort=relevance"
-url = "/v1/bibles/"+bibleId+"/search?query="+keywordSearch+"&limit="+limitOfPassagesToBringBack+"&sort=relevance"
-getPassagesForKeyword=a.getBibleData(url)
-print("The passage results for the keyword are as follows:",getPassagesForKeyword)
-for i in getPassagesForKeyword['data']['verses']:
-    verseMatch=i['text']
-    print("Matching verse is:")
-    print(verseMatch)
-
-# Bring back all verses in the specified chapter mentioned above
-# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.1/verses"
-url = "/v1/bibles/"+bibleId+"/chapters/"+bibleChapterId+"/verses"
-getVersesForChapter=a.getBibleData(url)
-print("Getting all verses for the chapter:",getVersesForChapter)
-
-# Retrieve the specific verse in a chapter desired
-bibleVerse=input("What is the specific verse you want to retrieve for the chapter you are in (like 1 for verse 1? ")
-# /v1/bibles/{bibleId}/verses/{verseId}
-# url = "/v1/bibles/"+bibleId+"/verses/GEN.1.1"
-url = "/v1/bibles/"+bibleId+"/verses/"+bibleChapterId+"."+bibleVerse
-getSpecifiedVerse=a.getBibleData(url)
-print("The specific verses requested is:",getSpecifiedVerse)
-time.sleep(1)

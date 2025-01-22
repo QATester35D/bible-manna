@@ -93,8 +93,8 @@ bibleVersions={
 # Bring back ALL the translations for a single Bible verse
 # *This works
 ####################################################################
-getVerseForAllTranslations('Psalms', 94, 19)
-
+getVerseForAllTranslations('1 John', 2, 20)
+time.sleep(1)
 ####################################################################
 # booksInNewTestament=["Matthew","Mark","Luke","John","Acts","Romans",
 #                 "1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians",

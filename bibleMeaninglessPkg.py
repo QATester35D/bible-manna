@@ -21,6 +21,23 @@ def getVerseForAllTranslations(book,chapter,verse):
         passage = bible.get_passage(book,chapter,verse) #Like: 'Ecclesiastes', 1, 2
         print(value + " Translation: " + passage)
 
+def getAndWriteAllTranslations(folderFileName,book,chapter,verse):
+    fileName=folderFileName+".txt"
+    f = open(fileName, "a")
+    for i, value in enumerate(translations, start=00):
+        if i == 0:
+            print("Looking up Bible verse: " + book + " " + str(chapter) + ":" + str(verse))
+        bible = WebExtractor(value)
+        passage = bible.get_passage(book,chapter,verse) #Like: 'Ecclesiastes', 1, 2
+        #beginning of passage contains the verse number as a superscript which can't be written as is to a text file, so dropping
+        if verse != 1:
+            verseLen=len(str(verse))
+            passage=passage[verseLen:]
+        valueToWrite=value + " Translation: " + passage
+        print(valueToWrite)
+        f.write(valueToWrite+"\"\n")
+    f.close()
+
 # Put these in classes, have this class/module use inheritance
 def getMultiVersesForAllTranslations(book, chapter_from, passage_from, chapter_to, passage_to):
     for i, value in enumerate(translations, start=00):
@@ -93,8 +110,17 @@ bibleVersions={
 # Bring back ALL the translations for a single Bible verse
 # *This works
 ####################################################################
-getVerseForAllTranslations('1 John', 2, 20)
+# getVerseForAllTranslations('1 John', 2, 20)
+# time.sleep(1)
+
+####################################################################
+# New function that will bring back ALL the translations for a single
+# Bible verse and write it to a text file.
+####################################################################
+folderFileName="C:\\Temp\\Bible\\BibleAllTranslations\\AllTranslationsForBibleVerse.txt"
+getAndWriteAllTranslations(folderFileName,'1 John', 2, 2)
 time.sleep(1)
+
 ####################################################################
 # booksInNewTestament=["Matthew","Mark","Luke","John","Acts","Romans",
 #                 "1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians",

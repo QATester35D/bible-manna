@@ -13,49 +13,56 @@ from meaningless import WebExtractor
 from meaningless import CSVDownloader
 import time
 
-def getVerseForAllTranslations(book,chapter,verse):
-    for i, value in enumerate(translations, start=00):
-        if i == 0:
-            print("Looking up Bible verse: " + book + " " + str(chapter) + ":" + str(verse))
-        bible = WebExtractor(value)
-        passage = bible.get_passage(book,chapter,verse) #Like: 'Ecclesiastes', 1, 2
-        print(value + " Translation: " + passage)
+######### Refactoring the code - in progress
+class bibleManna:
+    def __init__(self,book,chapter,verse):
+        self.book = book
+        self.chapter = chapter
+        self.verse = verse
 
-def getAndWriteAllTranslations(folderFileName,book,chapter,verse):
-    fileName=folderFileName+".txt"
-    f = open(fileName, "a")
-    for i, value in enumerate(translations, start=00):
-        if i == 0:
-            print("Looking up Bible verse: " + book + " " + str(chapter) + ":" + str(verse))
-        bible = WebExtractor(value)
-        passage = bible.get_passage(book,chapter,verse) #Like: 'Ecclesiastes', 1, 2
-        #beginning of passage contains the verse number as a superscript which can't be written as is to a text file, so dropping
-        if verse != 1:
-            verseLen=len(str(verse))
-            passage=passage[verseLen:]
-        valueToWrite=value + " Translation: " + passage
-        print(valueToWrite)
-        f.write(valueToWrite+"\"\n")
-    f.close()
+    def getVerseForAllTranslations(book,chapter,verse):
+        for i, value in enumerate(translations, start=00):
+            if i == 0:
+                print("Looking up Bible verse: " + book + " " + str(chapter) + ":" + str(verse))
+            bible = WebExtractor(value)
+            passage = bible.get_passage(book,chapter,verse) #Like: 'Ecclesiastes', 1, 2
+            print(value + " Translation: " + passage)
 
-# Put these in classes, have this class/module use inheritance
-def getMultiVersesForAllTranslations(book, chapter_from, passage_from, chapter_to, passage_to):
-    for i, value in enumerate(translations, start=00):
-        if i == 0:
-            print("Looking up Bible verse: "+book+" "+str(chapter_from)+":"+str(passage_from)+"-"+str(chapter_to)+":"+str(passage_to))
-        bible = WebExtractor(value)
-        # passage = bible.get_passage('Ecclesiastes', 1, 2)
-        passage = bible.get_passage_range(book, chapter_from, passage_from, chapter_to, passage_to)
-        print(value + " Translation: " + passage)
+    def getAndWriteAllTranslations(folderFileName,book,chapter,verse):
+        fileName=folderFileName+".txt"
+        f = open(fileName, "a")
+        for i, value in enumerate(translations, start=00):
+            if i == 0:
+                print("Looking up Bible verse: " + book + " " + str(chapter) + ":" + str(verse))
+            bible = WebExtractor(value)
+            passage = bible.get_passage(book,chapter,verse) #Like: 'Ecclesiastes', 1, 2
+            #beginning of passage contains the verse number as a superscript which can't be written as is to a text file, so dropping
+            if verse != 1:
+                verseLen=len(str(verse))
+                passage=passage[verseLen:]
+            valueToWrite=value + " Translation: " + passage
+            print(valueToWrite)
+            f.write(valueToWrite+"\"\n")
+        f.close()
 
-# Save passage result to a JSON file
-def writePassageResultToJsonFile(book,chapter,verse):
-    downloader = JSONDownloader()
-    time.sleep(2)
-    downloader.download_passage(book,chapter,verse) #Like: 'Ecclesiastes', 1, 2
-    bible = json_file_interface.read('C:/Temp/Ecclesiastes.json')
-    bible['Info']['Customised?'] = True
-    json_file_interface.write('./Ecclesiastes.json', bible)
+    # Put these in classes, have this class/module use inheritance
+    def getMultiVersesForAllTranslations(book, chapter_from, passage_from, chapter_to, passage_to):
+        for i, value in enumerate(translations, start=00):
+            if i == 0:
+                print("Looking up Bible verse: "+book+" "+str(chapter_from)+":"+str(passage_from)+"-"+str(chapter_to)+":"+str(passage_to))
+            bible = WebExtractor(value)
+            # passage = bible.get_passage('Ecclesiastes', 1, 2)
+            passage = bible.get_passage_range(book, chapter_from, passage_from, chapter_to, passage_to)
+            print(value + " Translation: " + passage)
+
+    # Save passage result to a JSON file
+    def writePassageResultToJsonFile(book,chapter,verse):
+        downloader = JSONDownloader()
+        time.sleep(2)
+        downloader.download_passage(book,chapter,verse) #Like: 'Ecclesiastes', 1, 2
+        bible = json_file_interface.read('C:/Temp/Ecclesiastes.json')
+        bible['Info']['Customised?'] = True
+        json_file_interface.write('./Ecclesiastes.json', bible)
 
 translations=["ASV","AKJV","BRG","EHV","ESV","ESVUK","GNV","GW","ISV",
               "JUB","KJV","KJ21","LEB","MEV","NASB","NASB1995","NET",

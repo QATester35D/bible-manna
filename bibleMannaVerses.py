@@ -66,33 +66,24 @@ class bibleManyVerses(bibleManna):
             passage = bible.get_passage_range(book, chapter_from, passage_from, chapter_to, passage_to)
             print(value + " Translation: " + passage)
 
-    # Save passage result to a JSON file
-    def writePassageResultToJsonFile(book,chapter,verse):
-        downloader = JSONDownloader()
-        time.sleep(2)
-        downloader.download_passage(book,chapter,verse) #Like: 'Ecclesiastes', 1, 2
-        bible = json_file_interface.read('C:/Temp/Ecclesiastes.json')
-        bible['Info']['Customised?'] = True
-        json_file_interface.write('./Ecclesiastes.json', bible)
-
 #######################################################################################################
 # Bring back a specified verse for a specific Bible translation
 ####################################################################
-bm=bibleManna('1 John', 2, 20)
-bm.getVerseForSpecificTranslation("NIV")
-
-####################################################################
-# Bring back ALL the translations for a range of Bible verses
-####################################################################
-bmv=bibleManyVerses('1 John', 2, 20, 2, 22)
-bmv.getMultiVersesForAllTranslations()
+# bm=bibleManna('Genesis', 22, 2)
+# bm.getVerseForSpecificTranslation("NIV")
 
 ####################################################################
 # Bring back ALL the translations for a single Bible verse
 ####################################################################
-bm=bibleManna('1 John', 2, 20)
+bm=bibleManna('Genesis', 22, 2)
 bm.getVerseForAllTranslations()
 time.sleep(1)
+
+####################################################################
+# Bring back ALL the translations for a range of Bible verses
+####################################################################
+bmv=bibleManyVerses('Genesis', 22, 20, 2, 22)
+bmv.getMultiVersesForAllTranslations()
 
 #########################################################################################
 # Bring back ALL the translations for a single Bible verse and write them to a text file

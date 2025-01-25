@@ -4,7 +4,8 @@ Bible for the soul.
 Project: To utilize various Bible API's to retrieve a variety of Bible verses and by specific translations or bringing back the verse(s) for ALL the translations for comparison. I use this in many ways and in particular for my own Bible studying. 
 
 The main file written for bringing back verse(s) is this one using the python package called Meaningless
-which is only used in this script.
+which is only used in this script. Note: the reference "Meaningless" they used, is based on Ecclesiastes 1 - "Everything Is Meaningless" - 1 The words of the Teacher, son of David, king in Jerusalem:
+
 bibleMannaVerses.py - I wrote a couple of classes and methods to bring back combinations of:
 - get a single verse
 - get multiple verses

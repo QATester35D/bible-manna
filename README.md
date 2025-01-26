@@ -12,6 +12,8 @@ bibleMannaVerses.py - I wrote a couple of classes and methods to bring back comb
 - retrieve all the available Bible translations to this package, for the specified verse(s)
 - write the results to a text file 
 
+*There are 27 different translations available (see the bibleMannaHelperFile.py)
+
 I did some other work in other files (see below) where I retrieve entired the entire Bible one book at a time and saved it as a csv file. Then processed through the book to remove the various special characters and cleanup lines so I could use the text in an effective way. I then processed through the csv files and inserted them into a MySQL database I created so one translation of the Bible I have in a database. With the verses in a database I can do various queries.
 
 Files:

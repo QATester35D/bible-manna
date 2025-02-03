@@ -54,10 +54,10 @@ class BibleGetInsight:
 
 # ########################################################################
 # ##### Bible Translation Choices - Bible IDs
-bibleId='926aa5efbc5e04e2-01' #German Luther Bible 1912 with Strong's numbers (appears to be the only one with Strong's numbers)
+# bibleId='926aa5efbc5e04e2-01' #German Luther Bible 1912 with Strong's numbers (in German but appears to be the only one with Strong's numbers)
 # # bibleId='06125adad2d5898a-01' #The Holy Bible, American Standard Version - no data strong
 # bibleId='685d1470fe4d5c3b-01'  #American Standard Version (Byzantine Text with Apocrypha) - New Testament only
-# bibleId='de4e12af7f28f599-01'  #King James (Authorised) Version
+bibleId='de4e12af7f28f599-01'  #King James (Authorised) Version
 # bibleId='de4e12af7f28f599-02'  #King James (Authorised) Version
 # bibleId='9879dbb7cfe39e4d-01'  #World English Bible
 # bibleId='7142879509583d59-01'  #World English Bible British Edition - 
@@ -70,6 +70,7 @@ bibleId='926aa5efbc5e04e2-01' #German Luther Bible 1912 with Strong's numbers (a
 # bibleId='65bfdebd704a8324-01'  #Brenton English translation of the Septuagint
 # bibleId='65eec8e0b60e656b-01'  #Free Bible Version - 
 # bibleId='c315fa9f71d4af3a-01'  #Geneva Bible - 
+
 
 ####### Examples of building the URLs to call. There is a bit of a hierarchy you have to call to drill down in the Bible
 # bibleChapterId='GEN.2'
@@ -116,6 +117,22 @@ theJSON = json.loads(response.content)
 
 # print("The specific chapter desired from this book is:",getSpecificBibleChapter)
 ########################################################################
+
+# Keyword search for passages containing the word
+keywordSearch=input("What is the specific keyword you want to search for in the Bible? ")
+limitOfPassagesToBringBack=input("How many total passages do you want to bring back that match the keyword? ")
+# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/search?query=discouraged&limit=10&sort=relevance"
+url = "/v1/bibles/"+bibleId+"/search?query="+keywordSearch+"&limit="+limitOfPassagesToBringBack+"&sort=relevance"
+getPassagesForKeyword=a.getBibleData(url)
+print("The passage results for the keyword are as follows:",getPassagesForKeyword)
+for i in getPassagesForKeyword['data']['verses']:
+    bookVerse=i['reference']
+    verseMatch=i['text']
+    print("Matching verse(s) are:")
+    print(f"{bookVerse} - {verseMatch}")
+
+time.sleep(1)
+
 ########################################################################
 
 #Get all the available Bible versions/translations
@@ -227,17 +244,7 @@ url = "/v1/bibles/"+bibleId+"/passages/"+startingChapter+"-"+endingChapter
 getBibleChapterRange=a.getBibleData(url)
 print("The Bible chapter range results are:",getBibleChapterRange)
 
-# Keyword search for passages containing the word
-keywordSearch=input("What is the specific keyword you want to search for in the Bible? ")
-limitOfPassagesToBringBack=input("How many total passages do you want to bring back that match the keyword? ")
-# url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/search?query=discouraged&limit=10&sort=relevance"
-url = "/v1/bibles/"+bibleId+"/search?query="+keywordSearch+"&limit="+limitOfPassagesToBringBack+"&sort=relevance"
-getPassagesForKeyword=a.getBibleData(url)
-print("The passage results for the keyword are as follows:",getPassagesForKeyword)
-for i in getPassagesForKeyword['data']['verses']:
-    verseMatch=i['text']
-    print("Matching verse is:")
-    print(verseMatch)
+### search was here
 
 # Bring back all verses in the specified chapter mentioned above
 # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.1/verses"

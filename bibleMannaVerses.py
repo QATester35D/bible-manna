@@ -5,6 +5,7 @@
 ##############################################################################################
 from meaningless import JSONDownloader
 from meaningless import json_file_interface
+from meaningless import YAMLDownloader, YAMLExtractor
 from meaningless import WebExtractor
 import bibleMannaHelperFile
 import time
@@ -67,6 +68,17 @@ class bibleManyVerses(bibleManna):
             print(value + " Translation: " + passage)
 
 #######################################################################################################
+###Temp code working on the search feature
+if __name__ == '__main__':
+    downloader = YAMLDownloader()
+    downloader.download_chapter('Ecclesiastes', 1)
+
+    bible = WebExtractor()
+    print(bible.search('discouraged', 'Mark', 1, is_regex=True))
+    time.sleep(1)
+
+
+#######################################################################################################
 # Bring back a specified verse for a specific Bible translation
 ####################################################################
 # bm=bibleManna('Genesis', 22, 2)
@@ -75,20 +87,20 @@ class bibleManyVerses(bibleManna):
 ####################################################################
 # Bring back ALL the translations for a single Bible verse
 ####################################################################
-bm=bibleManna('Genesis', 22, 2)
-bm.getVerseForAllTranslations()
-time.sleep(1)
+# bm=bibleManna('Genesis', 22, 2)
+# bm.getVerseForAllTranslations()
+# time.sleep(1)
 
-####################################################################
-# Bring back ALL the translations for a range of Bible verses
-####################################################################
-bmv=bibleManyVerses('Genesis', 22, 20, 2, 22)
-bmv.getMultiVersesForAllTranslations()
+# ####################################################################
+# # Bring back ALL the translations for a range of Bible verses
+# ####################################################################
+# bmv=bibleManyVerses('Genesis', 22, 20, 2, 22)
+# bmv.getMultiVersesForAllTranslations()
 
-#########################################################################################
-# Bring back ALL the translations for a single Bible verse and write them to a text file
-#########################################################################################
-bm=bibleManna('1 John', 2, 20)
-folderFileName="C:\\Temp\\Bible\\BibleAllTranslations\\AllTranslationsForBibleVerse.txt"
-bm.getAndWriteAllTranslations(folderFileName) #Bring back ALL the translations for a single verse and write it to a text file
-time.sleep(1)
+# #########################################################################################
+# # Bring back ALL the translations for a single Bible verse and write them to a text file
+# #########################################################################################
+# bm=bibleManna('1 John', 2, 20)
+# folderFileName="C:\\Temp\\Bible\\BibleAllTranslations\\AllTranslationsForBibleVerse.txt"
+# bm.getAndWriteAllTranslations(folderFileName) #Bring back ALL the translations for a single verse and write it to a text file
+# time.sleep(1)

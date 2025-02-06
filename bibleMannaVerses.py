@@ -1,5 +1,6 @@
 ##############################################################################################
 # This script uses the meaningless project/package (https://pypi.org/project/meaningless/)
+# This also imports my helper file
 # Note that if a method fails, it is probably because you are trying to access a Book that is
 # not available for that translation (some only offer the New Testament)
 ##############################################################################################

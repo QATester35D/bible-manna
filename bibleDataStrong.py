@@ -1,6 +1,10 @@
 ##############################################################################################
 # This script uses the API for api.bible 
 # References: https://docs.api.bible/guides/bibles/ and https://scripture.api.bible/livedocs#/ 
+# It uses methods to retrieve various aspects of the Bible, however this script was primarily
+# used to retrieve an entire Bible, writing each book to a text file and then insertBibleVersesDB.py
+# will process through these text files to load them into a MySQL database for various other 
+# processing by using SQL statements.
 ##############################################################################################
 import requests
 import json
@@ -8,7 +12,7 @@ import time
 import os
 import urllib.request, urllib.parse, urllib.error
 from collections import defaultdict
-import bibleBooks
+import bibleMannaHelperFile
 from bs4 import BeautifulSoup
 
 class BibleGetInsight:
@@ -48,7 +52,9 @@ biblePassage=""
 # biblePassage="'<p class=\"p\"><span data-number=\"1\" data-sid=\"GEN 1:1\" class=\"v\">1</span>Am <span data-strong=\"H7225\" class=\"w\">Anfang</span> <span data-strong=\"H1254\" class=\"w\">schuf</span> <span data-strong=\"H0430\" class=\"w\">Gott</span> <span data-strong=\"H8064\" class=\"w\">Himmel</span> und <span data-strong=\"H0776\" class=\"w\">Erde</span>. <span data-number=\"2\" data-sid=\"GEN 1:2\" class=\"v\">2</span>Und die <span data-strong=\"H0776\" class=\"w\">Erde</span> <span data-strong=\"H1961\" class=\"w\">war</span> <span data-strong=\"H8414\" class=\"w\">wüst</span> und <span data-strong=\"H0922\" class=\"w\">leer</span>, und es war <span data-strong=\"H2822\" class=\"w\">finster</span> auf der <span data-strong=\"H6440\" class=\"w\">Tiefe</span>; und der <span data-strong=\"H7307\" class=\"w\">Geist</span> <span data-strong=\"H0430\" class=\"w\">Gottes</span> <span data-strong=\"H7363\" class=\"w\">schwebte</span> <span data-strong=\"H5921\" class=\"w\">auf</span> dem <span data-strong=\"H6440\" class=\"w\">Wasser</span>. <span data-number=\"3\" data-sid=\"GEN 1:3\" class=\"v\">3</span>Und <span data-strong=\"H0430\" class=\"w\">Gott</span> <span data-strong=\"H0559\" class=\"w\">sprach</span>: Es <span data-strong=\"H1961\" class=\"w\">werde</span> <span data-strong=\"H0216\" class=\"w\">Licht</span>! und es ward <span data-strong=\"H0216\" class=\"w\>Licht</span>"
 
 #########################################################################################################
-#This German Bible translation is the only one api.bible seems to have that contains the Strong's numbers
+# This German Bible translation is the only one api.bible seems to have that contains the Strong's numbers
+# Doing work with Strong's numbers
+#########################################################################################################
 bibleId='926aa5efbc5e04e2-01' #German Luther Bible 1912 with Strong's numbers
 
 ####### Build the URL
@@ -140,7 +146,7 @@ for nbrBooksCtr in range(nbrOfBooks):
                         currentLine=nextLine
 
                     book=bookChapterVerse[:3]
-                    bibleBookFullName=bibleBooks.findBibleBookName(book)
+                    bibleBookFullName=bibleMannaHelperFile.findBibleBookName(book)
                     if starting:
                         fileName=folderName+bibleTranslation+"_"+bibleBookFullName+".txt"
                         f = open(fileName, "a")

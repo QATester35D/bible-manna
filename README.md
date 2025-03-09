@@ -3,6 +3,11 @@ Bible for the soul.
 
 Project: To utilize various Bible API's to retrieve a variety of Bible verses and by specific translations or bringing back the verse(s) for ALL the translations for comparison. I use this in many ways and in particular for my own Bible studying. 
 
+*Note: This is a work in progress. Everything developed works, but each script functions to perform specific tasks. 
+ - The initial task was to retrieve an entire Bible writing each book to it's own text file, cleanup the text files as there are many structural issues with the data that is returned, and then load each book in a database. All this has been completed.
+ - Additionally the Strong's numbers will be extracted from the German Luther Bible 1912 with Strong's numbers (the only one available to me that contains the Strong's numbers) and they are stored in a separate table.
+ - Finally another script (Class and methods) will be developed to generate trivia questions.
+
 The main file written for bringing back verse(s) is this one using the python package called Meaningless
 which is only used in this script. Note: the reference "Meaningless" they used, is based on Ecclesiastes 1 - "Everything Is Meaningless" - "The words of the Teacher, son of David, king in Jerusalem"
 

@@ -1,7 +1,8 @@
 ##############################################################################################
 # This script is necessary because the CSV files created with the meaningless CSVDownloader()
 # creates files that are messy, span multiple lines typically, and have other data that
-# is not relevant (creation info)
+# is not relevant (creation info). This script processes through each text file to clean them
+# up in order to then be read to insert into the database.
 ##############################################################################################
 import os
 import time

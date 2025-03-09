@@ -1,6 +1,11 @@
 import os
 import mysql.connector
 
+##############################################################################################
+# This script will process through the folder that contains the cleaned up text files. Each 
+# text file is a book from the Bible. This script will process through each text file and
+# insert the data into a database so that now the data (Bible) is contained in a MySQL database.
+##############################################################################################
 ################################################
 # Database connection to a MySQL database
 ################################################

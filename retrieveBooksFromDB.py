@@ -3,6 +3,10 @@ import os
 import time
 import mysql.connector
 
+##############################################################################################
+# This script is to contain methods for retrieving data from the database for various queries
+# of data from the Bible.
+##############################################################################################
 ################################################
 # Database connection to a MySQL database
 ################################################

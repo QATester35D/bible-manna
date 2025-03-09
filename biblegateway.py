@@ -1,4 +1,5 @@
 ##############################################################################################
+# This is a standalone script to use an API to retrieve data from an online Bible.
 # This script uses the API for api.bible 
 # References: https://docs.api.bible/guides/bibles/ and https://scripture.api.bible/livedocs#/ 
 ##############################################################################################
@@ -88,35 +89,6 @@ url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/books?include-chapt
 # url = "https://api.scripture.api.bible/v1/bibles/"+bibleId+"/verses/MAT.1.1"
 response = requests.request("GET", url, headers=headers)
 theJSON = json.loads(response.content)
-# print(theJSON)
-
-##############
-# if createFile:
-#     if os.path.exists(fname): # Check if the file exists
-#         os.remove(fname) # If it exists, delete the file
-#     f = open(fname, "a")
-#     f.write(theJSON)
-#     f.close()
-
-    # dataStrongVerse.append(item.get('data-strong'))
-
-    # for link in soup.find_all('span'):
-    #     if link['class'][0] == 'w':
-    #         dataStrongVerse.append(link.get('data-strong'))
-
-    # # if soup.span['class'] == 'w':
-    # #     soup.
-    # # item = soup.find("span").find("data-strong")
-    # # a=soup.find_all('data-strong')
-
-# for i in theJSON["span"]:
-#     if i["content"] == bibleName:
-#         biblePassage=biblePassage+" "+i["data-strong"]
-#         print("The Bible ID for the bible",bibleName,"is",bibleId)
-#         break
-
-# print("The specific chapter desired from this book is:",getSpecificBibleChapter)
-########################################################################
 
 # Keyword search for passages containing the word
 keywordSearch=input("What is the specific keyword you want to search for in the Bible? ")
@@ -243,8 +215,6 @@ endingChapter=booksInGLB[0]+"."+endingChapter
 url = "/v1/bibles/"+bibleId+"/passages/"+startingChapter+"-"+endingChapter
 getBibleChapterRange=a.getBibleData(url)
 print("The Bible chapter range results are:",getBibleChapterRange)
-
-### search was here
 
 # Bring back all verses in the specified chapter mentioned above
 # url = "https://api.scripture.api.bible/v1/bibles/06125adad2d5898a-01/chapters/GEN.1/verses"

@@ -2,7 +2,7 @@
 # This script uses the meaningless project/package (https://pypi.org/project/meaningless/)
 # This also imports my helper file
 # Note that if a method fails, it is probably because you are trying to access a Book that is
-# not available for that translation (some only offer the New Testament)
+# not available for that translation (some translations only offer the New Testament books)
 ##############################################################################################
 from meaningless import JSONDownloader
 from meaningless import json_file_interface
@@ -68,18 +68,9 @@ class bibleManyVerses(bibleManna):
             passage = bible.get_passage_range(book, chapter_from, passage_from, chapter_to, passage_to)
             print(value + " Translation: " + passage)
 
-#######################################################################################################
-###Temp code working on the search feature
-if __name__ == '__main__':
-    downloader = YAMLDownloader()
-    downloader.download_chapter('Ecclesiastes', 1)
-
-    bible = WebExtractor()
-    print(bible.search('discouraged', 'Mark', 1, is_regex=True))
-    time.sleep(1)
-
-
-#######################################################################################################
+##########################################################################################
+# Examples of calling some of these methods
+##########################################################################################
 # Bring back a specified verse for a specific Bible translation
 ####################################################################
 # bm=bibleManna('Genesis', 22, 2)
